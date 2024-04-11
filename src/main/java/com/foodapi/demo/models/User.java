@@ -33,11 +33,14 @@ public class User {
     @Column(nullable = false, length = 50, unique = true)
     private String username;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private Boolean active;
+    @Column
+    private Boolean active= true;
 
     @Column(length = 15)
     private String phone;
@@ -48,7 +51,7 @@ public class User {
     @Column(name = "lastlogin")
     private Timestamp lastLogin;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", 
     joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
@@ -59,7 +62,7 @@ public class User {
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Order order;
+    private Set<Order> orders;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
     private Post post;

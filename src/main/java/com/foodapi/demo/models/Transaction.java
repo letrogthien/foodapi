@@ -37,6 +37,6 @@ public class Transaction {
     private String paymentMethod;
     
     @OneToOne
-    @Column(name = "status")
+    @JoinColumn(name = "status")
     private StatusPay statusPay;
 }

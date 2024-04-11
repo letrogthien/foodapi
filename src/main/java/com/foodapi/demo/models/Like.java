@@ -1,10 +1,10 @@
 package com.foodapi.demo.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -19,10 +19,10 @@ public class Like {
     private Integer id;
 
     @ManyToOne
-    @Column(name = "post_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @OneToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }
