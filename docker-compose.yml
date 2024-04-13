@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: foodapp
+    ports:
+      - "3304:3306"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foodapp # Lưu ý ở đây
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+
+
+      #phai dung docker-compose down , docker-compose up --build

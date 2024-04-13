@@ -1,11 +1,13 @@
-FROM maven:3.8.5-openjdk-17 AS build
+FROM eclipse-temurin:21-jdk
+ 
+WORKDIR /app
+ 
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+ 
+COPY src ./src
+ 
+CMD ["./mvnw", "spring-boot:run"]
 
-COPY . .
-
-RUN mvn clean package -DskipTests
-
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
-
-EXPOSE 8080
-ENTRYPOINT [ "java", "-jar", "demo.jar" ]
+#
