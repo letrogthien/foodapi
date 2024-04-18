@@ -2,6 +2,7 @@ package com.foodapi.demo.repositories;
 
 import java.util.Optional;
 
+import org.hibernate.query.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsernameOrEmail(String UsernameOrEmail,String userNameOrEmail);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+    
     
 }

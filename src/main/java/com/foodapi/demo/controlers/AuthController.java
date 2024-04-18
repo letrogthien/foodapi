@@ -72,6 +72,7 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setActive(true);
         user.setEmail(registerDto.getEmail());
+        user.setRegistDate(new Timestamp(System.currentTimeMillis()));
         userService.defaultRole(user);
         userService.saveUser(user);
         return new ResponseEntity<>("register Succes", HttpStatus.OK);

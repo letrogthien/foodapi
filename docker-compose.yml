@@ -8,6 +8,8 @@ services:
       MYSQL_DATABASE: foodapp
     ports:
       - "3304:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
 
   app:
     build:
@@ -24,3 +26,5 @@ services:
 
 
       #phai dung docker-compose down , docker-compose up --build
+volumes:
+  mysql-data:

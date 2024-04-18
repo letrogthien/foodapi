@@ -27,7 +27,7 @@ public class Shop {
     @Column(name = "regisdate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp regisDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true)
     private User user;
 }
