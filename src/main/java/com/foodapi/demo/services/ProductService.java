@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.foodapi.demo.models.Product;
@@ -47,7 +46,6 @@ public class ProductService {
     public void deleteProductById(Integer id) {
         productRepository.findById(id).orElseThrow();
         productRepository.deleteById(id);
-
     }
 
     public void addProduct(ProductDto productDto) {

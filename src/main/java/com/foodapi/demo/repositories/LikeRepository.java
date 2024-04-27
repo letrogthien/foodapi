@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.foodapi.demo.models.Like;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Integer> {
-    
+        Integer countByPost_Id(Integer postId);
 }

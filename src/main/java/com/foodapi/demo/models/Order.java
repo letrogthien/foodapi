@@ -35,14 +35,14 @@ public class Order {
 
     private Timestamp date;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private StatusOrder statusOrder;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, orphanRemoval = true,cascade =  CascadeType.ALL)
+    @OneToMany(mappedBy = "order",  orphanRemoval = true,cascade =  CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @OneToOne(mappedBy = "order",fetch = FetchType.LAZY, orphanRemoval = true,cascade =  CascadeType.ALL)
+    @OneToOne(mappedBy = "order", orphanRemoval = true,cascade =  CascadeType.ALL)
     private Bill bill;
     
 }

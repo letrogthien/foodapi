@@ -23,6 +23,9 @@ public class UserService {
     public Optional<User> getUserByUserName(String name){
         return userRepository.findByUsername(name);
     }
+    public Optional<User> getUserById(Integer id){
+        return userRepository.findById(id);
+    }
     public Optional<User> getUserByUserNameOrEmail(String userNameOrEmail){
         return userRepository.findByUsernameOrEmail(userNameOrEmail,userNameOrEmail);
     }
@@ -35,6 +38,7 @@ public class UserService {
     public User saveUser(User user){
         return userRepository.save(user);
     }
+    
     public void defaultRole(User user){
         Set<Role> roles= new HashSet<>();
         Role role = roleRepository.findByName("USER").orElseThrow(()->new RuntimeException("role not fount"));

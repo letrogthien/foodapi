@@ -15,4 +15,5 @@ public class ProductDto {
     BigDecimal price;
     int categoryId;
     int shopId;
+    
 }

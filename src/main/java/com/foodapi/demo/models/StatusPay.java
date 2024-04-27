@@ -20,7 +20,7 @@ public class StatusPay {
 
     private String name;
 
-    @OneToOne(mappedBy = "statusPay",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "statusPay",cascade = CascadeType.ALL,orphanRemoval = true)
     private Transaction transaction;
 
 }

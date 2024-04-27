@@ -31,7 +31,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 10*60*60*1000))
                 .signWith(getSigningkey())
                 .compact();
 
@@ -51,6 +51,15 @@ public class JwtUtil {
         return false;
     }
 
+    public Date getExpiration(String jwt){
+        Date date = Jwts.parserBuilder()
+                                .setSigningKey(getSigningkey())
+                                .build()
+                                .parseClaimsJws(jwt)
+                                .getBody()
+                                .getExpiration();
+        return date;
+    }
     public boolean checkExpiration(String token){
         Date date = Jwts.parserBuilder()
                         .setSigningKey(getSigningkey())

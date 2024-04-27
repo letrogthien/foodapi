@@ -1,9 +1,10 @@
-package com.foodapi.demo.controlers;
+package com.foodapi.demo.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foodapi.demo.exceptions.User.UserAlreadyExist;
+import com.foodapi.demo.jwt.JwtModel;
 import com.foodapi.demo.jwt.JwtUtil;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.LoginDto;
@@ -13,7 +14,9 @@ import com.foodapi.demo.services.UserService;
 import jakarta.annotation.security.PermitAll;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,9 @@ public class AuthController {
             userService.saveUser(usOptional);
         }
         String token = jwtUtil.generateToken(authentication);
-        return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
+        JwtModel jwtModel= new JwtModel(token, jwtUtil.getExpiration(token));
+        
+        return new ResponseEntity<>(jwtModel, HttpStatus.OK);
 
     }
 
@@ -81,6 +86,7 @@ public class AuthController {
     
     @GetMapping("/test")   
     public ResponseEntity<?> test(){
+        
         return new ResponseEntity<>("testtt", HttpStatus.OK);
     }
 

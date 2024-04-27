@@ -20,6 +20,6 @@ public class StatusOrder {
 
     private String name;
 
-    @OneToOne(mappedBy = "statusOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true )
+    @OneToOne(mappedBy = "statusOrder",  cascade = CascadeType.ALL, orphanRemoval = true )
     private Order order;
 }

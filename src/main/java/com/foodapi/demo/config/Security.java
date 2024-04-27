@@ -1,16 +1,23 @@
 package com.foodapi.demo.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.foodapi.demo.jwt.JwtFilter;
 import com.foodapi.demo.services.CustomUserDetail;
@@ -42,14 +49,29 @@ public class Security {
         return new ProviderManager(authenticationProvider);
         
     }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Hoặc chỉ định `http://localhost:4200` thay vì `*` để hạn chế
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("*"));
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(csrf->csrf.disable())
-                    .authorizeHttpRequests(author->author.requestMatchers("/auth/login").permitAll()
-                                                        .requestMatchers("/auth/register").permitAll()
-                                                        .requestMatchers("/auth/test").hasAuthority("USER")
+                    .cors(cors->cors.configurationSource(corsConfigurationSource()))
+                    .authorizeHttpRequests(author->author
+                                                        .requestMatchers("products/delete/**").hasAnyAuthority("SHOPKEEPER","ADMIN")
+                                                        .requestMatchers("/products/add").hasAuthority("SHOPKEEPER")
+                                                        .requestMatchers("shop/register/**").hasAnyAuthority("USER")
                                                         .anyRequest().permitAll()
+
                                                         
         );
         httpSecurity.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

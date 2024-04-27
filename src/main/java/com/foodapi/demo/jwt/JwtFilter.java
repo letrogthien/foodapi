@@ -55,10 +55,8 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
-            // Trả về phản hồi cho trường hợp JWT hết hạn
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         } catch (Exception e) {
-            // Trả về phản hồi trong trường hợp khác
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
