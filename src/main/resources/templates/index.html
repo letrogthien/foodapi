@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        textarea{
+            width: 500px;
+            height: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>Login API</h2>
+        <textarea id="loginApi" readonly>
+     http://20.211.81.191/auth/login
+    
+        </textarea>
+        <button onclick="copyToClipboard('loginApi')">Copy</button>
+        
+    </div>
+    <div>
+        <textarea id="dataApi" readonly>
+
+            {
+                "userNameOrEmail": "lethien1121",
+                "password": "123"
+            }
+                </textarea>
+        <button onclick="copyToClipboard('dataApi')">Copy</button>
+    </div>
+
+    <div>
+        <h2>Register API</h2>
+        <textarea id="register" readonly>
+     http://20.211.81.191/auth/login
+    
+        </textarea>
+        <button onclick="copyToClipboard('register')">Copy</button>
+        
+    </div>
+    <div>
+        <textarea id="regisData" readonly>
+
+            {
+                "userNameOrEmail": "lethien1121",
+                "password": "123"
+            }
+                </textarea>
+        <button onclick="copyToClipboard('regisData')">Copy</button>
+    </div>
+
+
+    <div>
+        <h2>Product API</h2>
+        <textarea id="pro" readonly>
+     http://20.211.81.191/auth/login
+    
+        </textarea>
+        <button onclick="copyToClipboard('pro')">Copy</button>
+        
+    </div>
+
+    <div>
+        
+        <textarea id="pro1" readonly>
+            http://20.211.81.191/products/all
+    
+        </textarea>
+        <button onclick="copyToClipboard('pro1')">Copy</button>
+        
+    </div>
+    <div>
+        
+        <textarea id="pro2" readonly>
+            http://20.211.81.191/products/get?id=9
+    
+        </textarea>
+        <button onclick="copyToClipboard('pro2')">Copy</button>
+        
+    </div>
+    <div>
+        
+        <textarea id="pro3" readonly>
+            http://20.211.81.191/products/category?categoryId=9
+    
+        </textarea>
+        <button onclick="copyToClipboard('pro3')">Copy</button>
+        
+    </div>
+    <div>
+        
+        <textarea id="pro4" readonly>
+            http://20.211.81.191/products/delete?id=9
+
+    
+        </textarea>
+        <button onclick="copyToClipboard('pro4')">Copy</button>
+        
+    </div>
+
+    <div>
+        
+        <textarea id="pro5" readonly>
+            http://20.211.81.191/products/search?name=afas
+
+    
+        </textarea>
+        <button onclick="copyToClipboard('pro5')">Copy</button>
+        
+    </div>
+    <div>
+        
+        <textarea id="pro6" readonly>
+            http://20.211.81.191/products/add
+
+    
+        </textarea>
+        
+        <button onclick="copyToClipboard('pro6')">Copy</button>
+        
+    </div>
+    <div><p>(gui kem bearer token lay tu dnag nhap)</p></div>
+
+    
+    <div>
+        <h2>Shop API</h2>
+        <textarea id="shop" readonly>
+             http://20.211.81.191/shop/register/shopname
+    
+        </textarea>
+        <button onclick="copyToClipboard('shop')">Copy</button>
+        
+    </div>
+
+    <div>
+        <h2>Post API</h2>
+        <textarea id="post" readonly>
+             http://20.211.81.191/post/user?id=9
+    
+        </textarea>
+        <button onclick="copyToClipboard('post')">Copy</button>
+        
+    </div>
+    <div>
+        
+        <textarea id="post1" readonly>
+             http://20.211.81.191/post/comment/all?postId=9
+    
+        </textarea>
+        <button onclick="copyToClipboard('post1')">Copy</button>
+        
+    </div>
+    <div><p>(lay toan bo comment cua post)</p></div>
+
+    <div>
+        
+        <textarea id="post2" readonly>
+             http://20.211.81.191/post/like?postId=9
+    
+        </textarea>
+        <button onclick="copyToClipboard('post2')">Copy</button>
+        
+    </div>
+    <div><p>(lay so luong like cua post)</p></div>
+   
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        function copyToClipboard(elementId) {
+            var textArea = document.getElementById(elementId);
+            textArea.select();
+            document.execCommand("copy");
+        }
+    </script>
+    <script>
+        function adjustHeight(el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+    
+        // Initialize all textarea on page load
+        window.onload = function() {
+            const textAreas = document.querySelectorAll('textarea');
+            textAreas.forEach(adjustHeight);
+        };
+    </script>
+
+</body>
+
+</html>
