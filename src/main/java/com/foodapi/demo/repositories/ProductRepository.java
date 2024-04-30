@@ -1,5 +1,6 @@
 package com.foodapi.demo.repositories;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +13,8 @@ import java.util.Optional;
 @Repository
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+    @Autowired
+    JPAQueryFactory queryFactory;
     List<Product> findByNameLikeIgnoreCase(String name);
     List<Product> findByName(String name);
     @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId")
@@ -22,6 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findById(Integer id);
     
     void deleteByName(String name);
+
 
     
 

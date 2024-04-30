@@ -1,13 +1,6 @@
 FROM eclipse-temurin:21-jdk
  
-WORKDIR /app
- 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
-EXPOSE 8080
- 
-COPY src ./src
- 
-CMD ["./mvnw", "spring-boot:run"]
-
+VOLUME /tmp
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} foodapi.jar
+ENTRYPOINT ["java","-jar","/foodapi.jar"] 

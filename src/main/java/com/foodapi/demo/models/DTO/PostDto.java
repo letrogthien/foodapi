@@ -17,6 +17,6 @@ public class PostDto {
     private String userName;
     private String title;
     private String content;
-    private List<PostImg> postImgs;
+    private List<PostImgDto> postImgs;
     private Timestamp createAt;
 }
