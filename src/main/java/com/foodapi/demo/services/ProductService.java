@@ -9,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.foodapi.demo.models.Product;
+import com.foodapi.demo.models.QProduct;
 import com.foodapi.demo.models.DTO.ProductDto;
 
 import com.foodapi.demo.repositories.ProductRepository;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 public class ProductService {
@@ -83,4 +87,12 @@ public class ProductService {
                 product.getCategory().getId(),
                 product.getShop().getId());
     }
+    
+    
+    public List<ProductDto> getProductWithCategoryLike(String category){
+        QProduct qProduct= QProduct.product;
+        BooleanExpression producthascategories = qProduct.category.name.contains(category);
+        return convertListProductToDTO((List<Product>) productRepository.findAll(producthascategories)) ;
+    }
+   
 }

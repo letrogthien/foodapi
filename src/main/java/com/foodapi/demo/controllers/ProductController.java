@@ -86,7 +86,11 @@ public class ProductController {
         return new ResponseEntity<>("add success",HttpStatus.OK);
     }
     
-
+    @GetMapping("/test")   
+    public ResponseEntity<?> test(@RequestParam String name ){
+        
+        return new ResponseEntity<>(productService.getProductWithCategoryLike(name), HttpStatus.OK);
+    }
     
 
     

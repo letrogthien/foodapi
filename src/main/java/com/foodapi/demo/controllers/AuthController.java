@@ -1,6 +1,7 @@
 package com.foodapi.demo.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foodapi.demo.exceptions.User.UserAlreadyExist;
@@ -84,10 +85,6 @@ public class AuthController {
     }
 
     
-    @GetMapping("/test")   
-    public ResponseEntity<?> test(){
-        
-        return new ResponseEntity<>("testtt", HttpStatus.OK);
-    }
+    
 
 }
