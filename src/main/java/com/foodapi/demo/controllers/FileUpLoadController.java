@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -31,12 +34,18 @@ public class FileUpLoadController {
 
 
     @PostMapping("/upload/img")
-    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
-        String run = uploadService.uploadImageService(file);
-        if (!run.equalsIgnoreCase("ok")) {
-            return new ResponseEntity<>(run, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile[] file) {
+        StringBuffer rt=new StringBuffer();
+        for (MultipartFile multipartFile : file) {
+            String run = uploadService.uploadImageService(multipartFile);
+            if (!run.equalsIgnoreCase("ok")) {
+                rt=rt.append(run);
+            }
         }
-        return new ResponseEntity<>(run, HttpStatus.OK);
+        if(!rt.toString().equals("")){
+            return new ResponseEntity<>(rt.toString(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

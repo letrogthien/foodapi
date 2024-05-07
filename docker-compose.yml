@@ -1,29 +1,37 @@
-version: '3'
+version: '3.8'
 services:
-  mysql:
-    image: mysql:latest
-    restart: always
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: Abcd1234
       MYSQL_DATABASE: foodapp
+      
     ports:
-      - "3304:3306"
+      - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
-      - data.sql:/docker-entrypoint-initdb.d/data.sql
+      - ./mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foodapp # Lưu ý ở đây
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-    depends_on:
-      - mysql
-    ports:
+  spring-boot-app:
+      image: letrogthien/foodapi1:latest
+      container_name: spring-boot-app
+      restart: on-failure
+      volumes: 
+        - ./myapp/tmp:/tmp
+      ports:
       - "8080:8080"
-      #phai dung docker-compose down , docker-compose up --build
-volumes:
-  mysql-data:
+      depends_on:
+        - mysql-db
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - spring-boot-app
