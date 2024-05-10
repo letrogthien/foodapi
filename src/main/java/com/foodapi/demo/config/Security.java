@@ -70,6 +70,7 @@ public class Security {
                                                         .requestMatchers("products/delete/**").hasAnyAuthority("SHOPKEEPER","ADMIN")
                                                         .requestMatchers("/products/add").hasAuthority("SHOPKEEPER")
                                                         .requestMatchers("shop/register/**").hasAnyAuthority("USER")
+                                                        .requestMatchers("/auth/test").hasAnyAuthority("USER")
                                                         .anyRequest().permitAll()
 
                                                         

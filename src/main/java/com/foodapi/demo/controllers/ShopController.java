@@ -1,6 +1,7 @@
 package com.foodapi.demo.controllers;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.foodapi.demo.models.Role;
 import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
+import com.foodapi.demo.models.DTO.ShopDto;
 import com.foodapi.demo.repositories.RoleRepository;
 import com.foodapi.demo.services.ShopService;
 import com.foodapi.demo.services.UserService;
@@ -23,6 +25,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -57,5 +62,12 @@ public class ShopController {
         
         return new ResponseEntity<>(shop,HttpStatus.OK);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllShop() {
+        List<ShopDto> shopDtos = shopService.convertListShopToDTO(shopService.getAllShop());
+        return new ResponseEntity<>(shopDtos, HttpStatus.OK);
+    }
+    
     
 }

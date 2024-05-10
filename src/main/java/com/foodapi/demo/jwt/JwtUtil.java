@@ -7,6 +7,7 @@ import java.util.Date;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -32,7 +33,7 @@ public class JwtUtil {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 10*60*60*1000))
-                .signWith(getSigningkey())
+                .signWith(getSigningkey(),SignatureAlgorithm.HS512)
                 .compact();
 
     }
