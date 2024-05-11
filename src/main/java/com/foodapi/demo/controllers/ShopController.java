@@ -64,6 +64,12 @@ public class ShopController {
         return new ResponseEntity<>(shop,HttpStatus.OK);
     }
 
+    @GetMapping("/get")
+    public ResponseEntity<?> getShopById(@RequestParam Integer id) {
+        return new ResponseEntity<>(shopService.getShopById(id), HttpStatus.OK);
+    }
+    
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllShop() {
         List<ShopDto> shopDtos = shopService.convertListShopToDTO(shopService.getAllShop());
