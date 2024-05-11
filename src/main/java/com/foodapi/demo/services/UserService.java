@@ -45,5 +45,10 @@ public class UserService {
         roles.add(role);
         user.setRoles(roles);
     }
+    public Integer getIdByUserName(String userName){
+        User user = getUserByUserNameOrEmail(userName).orElseThrow();
+        return user.getId();
+
+    }
 
 }

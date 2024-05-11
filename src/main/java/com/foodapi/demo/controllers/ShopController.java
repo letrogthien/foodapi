@@ -60,6 +60,7 @@ public class ShopController {
         user.setRoles(roles);
         User newUser = userService.saveUser(user);
         
+        
         return new ResponseEntity<>(shop,HttpStatus.OK);
     }
 

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -26,12 +27,12 @@ public class UploadService {
         final String[] extend = { "jpg", "png" };
         try {
             if (file == null || file.isEmpty()) {
-                return "select file please!";
+                throw new FileNotFoundException();   
             }
             String extensionFile = FilenameUtils.getExtension(file.getOriginalFilename());
             boolean contains = Arrays.asList(extend).contains(extensionFile);
             if (!contains) {
-                return "not img file";
+                throw new FileUploadException();
             }
 
             Path path = Paths.get(UPLOAD_DIR);
@@ -45,12 +46,12 @@ public class UploadService {
                 Path desPathIfExists = path.resolve(String.valueOf(ran) + file.getOriginalFilename());
 
                 file.transferTo(desPathIfExists);
-                return "ok";
+                return String.valueOf(ran) + file.getOriginalFilename();
 
             }
             Path desPathIfUnExists = path.resolve(file.getOriginalFilename());
             file.transferTo(desPathIfUnExists);
-            return "ok";
+            return file.getOriginalFilename();
 
         } catch (IOException e) {
             return e.getMessage();

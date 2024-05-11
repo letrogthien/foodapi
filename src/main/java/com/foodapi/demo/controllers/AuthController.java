@@ -8,6 +8,7 @@ import com.foodapi.demo.exceptions.User.UserAlreadyExist;
 import com.foodapi.demo.jwt.JwtModel;
 import com.foodapi.demo.jwt.JwtUtil;
 import com.foodapi.demo.models.User;
+import com.foodapi.demo.models.DTO.JwtResponse;
 import com.foodapi.demo.models.DTO.LoginDto;
 import com.foodapi.demo.models.DTO.RegisterDto;
 import com.foodapi.demo.services.UserService;
@@ -58,9 +59,9 @@ public class AuthController {
             userService.saveUser(usOptional);
         }
         String token = jwtUtil.generateToken(authentication);
-        JwtModel jwtModel= new JwtModel(token, jwtUtil.getExpiration(token));
+        JwtResponse jwtResponse= new JwtResponse(token,userService.getIdByUserName(loginDto.getUserNameOrEmail()), jwtUtil.getExpiration(token));
         
-        return new ResponseEntity<>(jwtModel, HttpStatus.OK);
+        return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 
     }
 

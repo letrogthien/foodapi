@@ -8,14 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +36,9 @@ public class FileUpLoadController {
         StringBuffer rt=new StringBuffer();
         for (MultipartFile multipartFile : file) {
             String run = uploadService.uploadImageService(multipartFile);
-            if (!run.equalsIgnoreCase("ok")) {
-                rt=rt.append(run);
-            }
+            rt.append(run);
         }
-        if(!rt.toString().equals("")){
-            return new ResponseEntity<>(rt.toString(), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(rt.toString(),HttpStatus.OK);
 
     }
 
