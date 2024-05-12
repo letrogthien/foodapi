@@ -28,6 +28,8 @@ public class ProductService {
     @Autowired
     ShopService shopService;
 
+    QProduct qProduct= QProduct.product;
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
 
@@ -90,9 +92,11 @@ public class ProductService {
     
     
     public List<ProductDto> getProductWithCategoryLike(String category){
-        QProduct qProduct= QProduct.product;
+        
         BooleanExpression producthascategories = qProduct.category.name.contains(category);
         return convertListProductToDTO((List<Product>) productRepository.findAll(producthascategories)) ;
     }
+
+    
    
 }

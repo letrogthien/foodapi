@@ -10,6 +10,7 @@ import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.ProductDto;
+import com.foodapi.demo.services.OrderItemService;
 import com.foodapi.demo.services.ProductService;
 import com.foodapi.demo.services.ShopService;
 import com.foodapi.demo.services.UploadService;
@@ -47,6 +48,11 @@ public class ProductController {
 
     @Autowired
     ObjectMapper objectMapper;
+
+
+    @Autowired
+    private OrderItemService orderItemService;
+    
     @GetMapping("/all")
     public ResponseEntity<?> getAllProduct() {
         return new ResponseEntity<>(productService.convertListProductToDTO(productService.getAllProducts()),
@@ -111,4 +117,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductWithCategoryLike(name), HttpStatus.OK);
     }
 
+    
+    @GetMapping("/bestsale")
+    public ResponseEntity<?> getMethodName() {
+        return new ResponseEntity<>(productService.convertListProductToDTO(orderItemService.getListProductId()),HttpStatus.OK);
+    }
+    
+
+    
 }
