@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface FeedBackRepository extends JpaRepository<FeedBack, Integer> {
     Optional<FeedBack> findById(Integer id);
     List<FeedBack> findByUser_Id(Integer userId);
+    List<FeedBack> findByProduct_Id(Integer productId);
 }

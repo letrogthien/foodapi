@@ -1,6 +1,7 @@
 package com.foodapi.demo.models;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -2,7 +2,6 @@ package com.foodapi.demo.models.DTO;
 
 import java.sql.Timestamp;
 
-import com.foodapi.demo.models.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
