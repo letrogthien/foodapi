@@ -10,6 +10,7 @@ import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.ProductDto;
+import com.foodapi.demo.services.FlashSaleService;
 import com.foodapi.demo.services.OrderItemService;
 import com.foodapi.demo.services.ProductService;
 import com.foodapi.demo.services.ShopService;
@@ -45,6 +46,9 @@ public class ProductController {
 
     @Autowired
     UploadService uploadService;
+
+    @Autowired
+    FlashSaleService flashSaleService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -123,6 +127,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.convertListProductToDTO(orderItemService.getListProductId()),HttpStatus.OK);
     }
     
+    @GetMapping("/flashsale")
+    public ResponseEntity<?> getMethodName1() {
+        return new ResponseEntity<>(flashSaleService.getAllProductSale(), HttpStatus.OK);
+    }
 
+    
+    
     
 }

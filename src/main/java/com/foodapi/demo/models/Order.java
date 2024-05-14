@@ -39,10 +39,5 @@ public class Order {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private StatusOrder statusOrder;
 
-    @OneToMany(mappedBy = "order",  orphanRemoval = true,cascade =  CascadeType.ALL)
-    private List<OrderItem> orderItems;
-
-    @OneToOne(mappedBy = "order", orphanRemoval = true,cascade =  CascadeType.ALL)
-    private Bill bill;
     
 }

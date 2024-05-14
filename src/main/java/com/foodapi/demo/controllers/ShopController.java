@@ -18,6 +18,7 @@ import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.ShopDto;
 import com.foodapi.demo.repositories.RoleRepository;
+import com.foodapi.demo.services.FeedBackService;
 import com.foodapi.demo.services.ShopService;
 import com.foodapi.demo.services.UserService;
 
@@ -40,6 +41,9 @@ public class ShopController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    FeedBackService feedBackService;
     
     @PostMapping("/register/{shopName}")
     public ResponseEntity<?> registerShop(@PathVariable String shopName) {
@@ -75,6 +79,14 @@ public class ShopController {
         List<ShopDto> shopDtos = shopService.convertListShopToDTO(shopService.getAllShop());
         return new ResponseEntity<>(shopDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/rating/avarage")
+    public ResponseEntity<?> ratingAvarage(@RequestParam Integer shopId) {
+        return new ResponseEntity<>(feedBackService.averageRating(shopId), HttpStatus.OK);
+    }
+    
+
+    
     
     
 }

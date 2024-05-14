@@ -2,6 +2,7 @@ package com.foodapi.demo.services;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,11 @@ public class PostService {
 
     }
 
+    public Optional<Post> getPostByPostId(int id){
+        return postRepository.findById(id);
+
+    }
+
     public void deletePost(Integer id){
         postRepository.deleteById(id);
     }
@@ -60,6 +66,10 @@ public class PostService {
         post.setCreateAt(new Timestamp(System.currentTimeMillis()));
         post.setTitle(postDto.getTitle());
         post.setUser(userService.getUserById(postDto.getUserId()).orElseThrow());
+        return postRepository.save(post);
+    }
+
+    public Post savePost(Post post){
         return postRepository.save(post);
     }
 

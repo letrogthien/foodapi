@@ -19,14 +19,10 @@ public class OrderItemService {
 
 
     
-
+    @Autowired
     private JPAQueryFactory queryFactory;
 
-    @Autowired
-    public OrderItemService(EntityManager entityManager) {
-        this.queryFactory = new JPAQueryFactory(entityManager);
     
-    }
     
     
 

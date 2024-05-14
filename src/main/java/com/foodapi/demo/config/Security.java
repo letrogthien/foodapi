@@ -15,12 +15,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.foodapi.demo.jwt.JwtFilter;
 import com.foodapi.demo.services.CustomUserDetail;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Configuration
 public class Security {
@@ -34,6 +39,14 @@ public class Security {
     @Bean
     public JwtFilter jwtTokenFilter(){
         return new JwtFilter();
+    }
+
+     @PersistenceContext
+    private EntityManager entityManager;
+    
+    @Bean
+    public JPAQueryFactory jpaQueryFactory() {
+        return new JPAQueryFactory(entityManager);
     }
 
     @Bean
@@ -64,7 +77,7 @@ public class Security {
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.csrf(csrf->csrf.disable())
+        httpSecurity.csrf((csrf)->csrf.disable())
                     .cors(cors->cors.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(author->author
                                                         .requestMatchers("products/delete/**").hasAnyAuthority("SHOPKEEPER","ADMIN")

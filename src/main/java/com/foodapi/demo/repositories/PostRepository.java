@@ -7,9 +7,11 @@ import com.foodapi.demo.models.Post;
 import com.foodapi.demo.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByUser_Id(Integer id);
+    Optional<Post> findByPost_Id(Integer id);
     
 }

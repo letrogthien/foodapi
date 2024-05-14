@@ -55,6 +55,10 @@ public class FeedBackController {
         return new ResponseEntity<>(feedBackService.getByProductId(productId), HttpStatus.OK);
     }
     
+    @GetMapping("/comment/sum")
+    public ResponseEntity<?> sumComment1(@RequestParam Integer productId) {
+        return new ResponseEntity<>(feedBackService.sumComment(productId), HttpStatus.OK);
+    }
 
 
     

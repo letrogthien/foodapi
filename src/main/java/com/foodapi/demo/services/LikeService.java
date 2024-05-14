@@ -23,11 +23,22 @@ public class LikeService {
         return like;
     }
 
-    public Like addLike(Like like){
-        return likeRepository.save(like);
+
+
+    public Like Liking(Like like){
+        Like likeNew =likeRepository.findByPostIdAndUserId(like.getPost().getId(),like.getUser().getId()).orElse(null);
+        if ( likeNew == null){
+            return likeRepository.save(like);
+        }
+        
+        return deleteLike(likeNew.getId());
     }
 
     public Integer countLike(Integer postId){
         return likeRepository.countByPost_Id(postId);
+    }
+
+    public boolean deleteLikePost(Integer postId){
+        return likeRepository.deleteByPost_Id(postId);
     }
 }

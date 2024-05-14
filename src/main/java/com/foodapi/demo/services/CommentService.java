@@ -1,6 +1,7 @@
 package com.foodapi.demo.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ public class CommentService {
         return commentRepository.findByPost_Id(postId);
     }
 
-
+    public Optional<Comment> getCommentById(Integer commentId){
+        return commentRepository.findById(commentId);
+    }
 
 
     public Comment deleteComment(Integer id){
@@ -27,12 +30,23 @@ public class CommentService {
         return comment;
     }
 
-    public Comment addComment(String content, Integer id){
+    public boolean deleteCommentPost(Integer postId){
+        return commentRepository.deleteByPost_Id(postId);
+    }
+
+    public Comment editComment(String content, Integer id){
         Comment comment= commentRepository.findById(id).orElseThrow();
         comment.setContent(content);
         commentRepository.save(comment);
         return comment;
     }
+
+
+    public Comment addComment(Comment comment){
+        return commentRepository.save(comment);
+    }
+
+    
 
     public List<CommentDto> converDto(List<Comment> comments){
         return comments.stream()

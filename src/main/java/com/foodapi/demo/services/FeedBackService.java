@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.foodapi.demo.models.FeedBack;
 import com.foodapi.demo.models.Product;
+import com.foodapi.demo.models.QFeedBack;
 import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.FeedBackDto;
 import com.foodapi.demo.models.DTO.ShopDto;
 import com.foodapi.demo.repositories.FeedBackRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 public class FeedBackService {
@@ -27,8 +29,11 @@ public class FeedBackService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    JPAQueryFactory jpaQueryFactory;
+
     public FeedBack addFeedBack(FeedBack feedBack) {
-        
+
         return feedBackRepository.save(feedBack);
     }
 
@@ -36,7 +41,7 @@ public class FeedBackService {
         feedBackRepository.deleteById(id);
     }
 
-    public List<FeedBackDto> getByProductId(Integer productId){
+    public List<FeedBackDto> getByProductId(Integer productId) {
         return convertListFeedBackDtos(feedBackRepository.findByProduct_Id(productId));
     }
 
@@ -59,5 +64,17 @@ public class FeedBackService {
                 feedback.getContent(),
                 feedback.getRateing(),
                 feedback.getProduct().getId());
+    }
+
+    public double averageRating(Integer id) {
+        QFeedBack qFeedBack = QFeedBack.feedBack;
+        return jpaQueryFactory.select(qFeedBack.rateing.avg())
+                .from(qFeedBack)
+                .where(qFeedBack.product.id.eq(id))
+                .fetchOne();
+    }
+
+    public long sumComment(Integer id){
+        return feedBackRepository.countByProduct_Id(id);
     }
 }
