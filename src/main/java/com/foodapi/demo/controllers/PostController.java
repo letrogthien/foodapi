@@ -94,16 +94,21 @@ public class PostController {
 
     @PostMapping("/delete")
     public ResponseEntity<?> deletePost(@RequestParam Integer postId) {
-        User user = authenticationService.authenticationUser();
-        Post post = postService.getPostByPostId(postId).orElseThrow();
-        if (post.getUser().getId() != user.getId()) {
-            return new ResponseEntity<>("deny", HttpStatus.FORBIDDEN);
-        }
-        commentService.deleteCommentPost(postId);
-        likeService.deleteLikePost(postId);
-        postService.deletePost(postId);
+        try {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+            User user = authenticationService.authenticationUser();
+            Post post = postService.getPostByPostId(postId).orElseThrow();
+            if (post.getUser().getId() != user.getId()) {
+                return new ResponseEntity<>("deny", HttpStatus.FORBIDDEN);
+            }
+            commentService.deleteCommentPost(postId);
+            likeService.deleteLikePost(postId);
+            postService.deletePost(postId);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

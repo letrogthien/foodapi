@@ -8,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.foodapi.demo.models.Comment;
+import com.foodapi.demo.models.QComment;
 import com.foodapi.demo.models.DTO.CommentDto;
 import com.foodapi.demo.repositories.CommentRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 public class CommentService {
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    JPAQueryFactory jpaQueryFactory;
+
     public List<Comment> getAllCommentByPostId(Integer postId){
         return commentRepository.findByPost_Id(postId);
     }
@@ -30,8 +35,9 @@ public class CommentService {
         return comment;
     }
 
-    public boolean deleteCommentPost(Integer postId){
-        return commentRepository.deleteByPost_Id(postId);
+    public void deleteCommentPost(Integer postId){
+        
+        commentRepository.deleteByPostId(postId);
     }
 
     public Comment editComment(String content, Integer id){
@@ -45,6 +51,9 @@ public class CommentService {
     public Comment addComment(Comment comment){
         return commentRepository.save(comment);
     }
+
+
+
 
     
 

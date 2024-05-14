@@ -38,7 +38,7 @@ public class LikeService {
         return likeRepository.countByPost_Id(postId);
     }
 
-    public boolean deleteLikePost(Integer postId){
-        return likeRepository.deleteByPost_Id(postId);
+    public void deleteLikePost(Integer postId){
+         likeRepository.deleteByPostId(postId);
     }
 }

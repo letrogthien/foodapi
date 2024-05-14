@@ -23,7 +23,7 @@ import lombok.Data;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne()
