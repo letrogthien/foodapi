@@ -26,6 +26,10 @@ public class PostImgService {
                     .collect(Collectors.toList());
     }
 
+    public void savePostImg(PostImg postImg){
+        postImgRepository.save(postImg);
+    }
+
     // public List<PostImgDto> getPostImg(int id){
     //     List<PostImg> postImgs=this.getPostImgByPostId(id);
     //     List<PostImgDto> postImgDtos= postImgs.stream()

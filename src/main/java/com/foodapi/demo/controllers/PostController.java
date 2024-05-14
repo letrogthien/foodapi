@@ -2,15 +2,19 @@ package com.foodapi.demo.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.foodapi.demo.models.Post;
+import com.foodapi.demo.models.PostImg;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.CommentDto;
 import com.foodapi.demo.models.DTO.LikeDto;
 import com.foodapi.demo.services.AuthenticationService;
 import com.foodapi.demo.services.CommentService;
 import com.foodapi.demo.services.LikeService;
+import com.foodapi.demo.services.PostImgService;
 import com.foodapi.demo.services.PostService;
+import com.foodapi.demo.services.UploadService;
 import com.foodapi.demo.services.UserService;
 
 import java.sql.Timestamp;
@@ -30,16 +34,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/post")
 public class PostController {
+
     @Autowired
     PostService postService;
+
     @Autowired
     CommentService commentService;
+
     @Autowired
     LikeService likeService;
+
     @Autowired
     UserService userService;
+
     @Autowired
     AuthenticationService authenticationService;
+
+    @Autowired
+    UploadService uploadService;
+
+    @Autowired
+    PostImgService postImgService;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllPost() {
@@ -65,15 +80,25 @@ public class PostController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestParam String title,
-            @RequestParam String content) {
+            @RequestParam String content, @RequestParam MultipartFile[] files) {
 
         User user = authenticationService.authenticationUser();
+        
         Post post = new Post();
         post.setContent(content);
         post.setUser(user);
         post.setCreateAt(new Timestamp(System.currentTimeMillis()));
         post.setTitle(title);
-        postService.savePost(post);
+        Post a= postService.savePost(post);
+
+        for (MultipartFile multipartFile : files) {
+            String saveString=uploadService.uploadImageService(multipartFile);
+            PostImg postImg = new PostImg();
+            postImg.setName(saveString);
+            postImg.setUrl(saveString);
+            postImg.setPost(postService.getPostByPostId(a.getId()).orElseThrow());
+            postImgService.savePostImg(postImg);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -26,8 +26,10 @@ public class PostImg {
     private String url;
 
     
-    @Column(name = "post_id")
-    private int postId;
+
+    @ManyToOne(fetch =FetchType.LAZY )
+    @JoinColumn(name = "post_id" )
+    private Post post;
 
     
 }
