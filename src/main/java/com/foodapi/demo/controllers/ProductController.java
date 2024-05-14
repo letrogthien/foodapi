@@ -77,7 +77,7 @@ public class ProductController {
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public ResponseEntity<?> adeleteProductById(@RequestParam(required = false) Integer id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUserNameOrEmail(authentication.getName()).orElseThrow();
@@ -101,7 +101,7 @@ public class ProductController {
     public ResponseEntity<?> addProduct(@RequestParam("productDto") String productDtoJson, @RequestParam("file") MultipartFile file) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-        ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
+            ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
             if (file != null) {
                 String ok = uploadService.uploadImageService(file);
                 productDto.setImg(ok);

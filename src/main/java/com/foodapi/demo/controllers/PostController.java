@@ -7,6 +7,7 @@ import com.foodapi.demo.models.Post;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.CommentDto;
 import com.foodapi.demo.models.DTO.LikeDto;
+import com.foodapi.demo.services.AuthenticationService;
 import com.foodapi.demo.services.CommentService;
 import com.foodapi.demo.services.LikeService;
 import com.foodapi.demo.services.PostService;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +38,8 @@ public class PostController {
     LikeService likeService;
     @Autowired
     UserService userService;
+    @Autowired
+    AuthenticationService authenticationService;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllPost() {
@@ -59,9 +64,10 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPost(@RequestParam Integer userId, @RequestParam String title,
+    public ResponseEntity<?> createPost(@RequestParam String title,
             @RequestParam String content) {
-        User user = userService.getUserById(userId).orElseThrow();
+
+        User user = authenticationService.authenticationUser();
         Post post = new Post();
         post.setContent(content);
         post.setUser(user);
@@ -72,10 +78,12 @@ public class PostController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<?> editPost(@RequestParam Integer postId, @RequestParam String title,
-            @RequestParam String content,@RequestParam Integer userId) {
+    public ResponseEntity<?> editPost(@RequestParam String title,
+            @RequestParam String content, @RequestParam Integer postId) {
+        User user = authenticationService.authenticationUser();
+
         Post post = postService.getPostByPostId(postId).orElseThrow();
-        if (post.getUser().getId() != userId) {
+        if (post.getUser().getId() != user.getId()) {
             return new ResponseEntity<>("deny", HttpStatus.FORBIDDEN);
         }
         post.setContent(content);
@@ -85,10 +93,10 @@ public class PostController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<?> deletePost(@RequestParam Integer postId, @RequestParam Integer userId) {
-
+    public ResponseEntity<?> deletePost(@RequestParam Integer postId) {
+        User user = authenticationService.authenticationUser();
         Post post = postService.getPostByPostId(postId).orElseThrow();
-        if (post.getUser().getId() != userId) {
+        if (post.getUser().getId() != user.getId()) {
             return new ResponseEntity<>("deny", HttpStatus.FORBIDDEN);
         }
         commentService.deleteCommentPost(postId);

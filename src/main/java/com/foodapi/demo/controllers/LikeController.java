@@ -10,35 +10,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.foodapi.demo.models.Like;
+import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.LikeDto;
+import com.foodapi.demo.services.AuthenticationService;
 import com.foodapi.demo.services.LikeService;
 import com.foodapi.demo.services.PostService;
 import com.foodapi.demo.services.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 @Controller
 @RequestMapping("like")
 public class LikeController {
-    @Autowired 
+    @Autowired
     LikeService likeService;
 
-    @Autowired 
+    @Autowired
     UserService userService;
 
     @Autowired
     PostService postService;
 
-    @PostMapping("liking")    
-    public ResponseEntity<?> likeForPost(@RequestParam Integer userId, @RequestParam Integer postId ){
+    @Autowired
+    AuthenticationService authenticationService;
+
+    @PostMapping("liking")
+    public ResponseEntity<?> likeForPost(@RequestParam Integer postId) {
+        User user = authenticationService.authenticationUser();
+
         Like like = new Like();
         like.setPost(postService.getPostByPostId(postId).orElseThrow());
-        like.setUser(userService.getUserById(userId).orElseThrow());
+        like.setUser(user);
         likeService.Liking(like);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    
-    
-    
 }

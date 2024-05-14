@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.foodapi.demo.models.FeedBack;
+import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.FeedBackDto;
+import com.foodapi.demo.services.AuthenticationService;
 import com.foodapi.demo.services.FeedBackService;
 import com.foodapi.demo.services.ProductService;
 import com.foodapi.demo.services.UserService;
@@ -33,10 +35,14 @@ public class FeedBackController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     @PostMapping("/add")
-    public ResponseEntity<?> addFeedBack(@RequestParam Integer userId, @RequestParam String content, @RequestParam Integer rateting, @RequestParam Integer productId) {
+    public ResponseEntity<?> addFeedBack( @RequestParam String content, @RequestParam Integer rateting, @RequestParam Integer productId) {
+        User user = authenticationService.authenticationUser();
         FeedBack feedBack = new FeedBack();
-        feedBack.setUser(userService.getUserById(userId).orElseThrow());
+        feedBack.setUser(user);
         feedBack.setContent(content);
         feedBack.setRateing(rateting);
         feedBack.setTime(new Timestamp(System.currentTimeMillis()));
@@ -46,6 +52,11 @@ public class FeedBackController {
     }
     @PostMapping("/delete")
     public ResponseEntity<?> deleteFeedBack(@RequestParam Integer id) {
+        User user = authenticationService.authenticationUser();
+        FeedBack feedBack = feedBackService.getByFeedBackId(id);
+        if(feedBack.getUser().getId() != user.getId()){
+            return new ResponseEntity<>("denied", HttpStatus.UNAUTHORIZED);
+        }
         feedBackService.deleteFeedBack(id);
         return new ResponseEntity<>("delete success",HttpStatus.OK );
     }

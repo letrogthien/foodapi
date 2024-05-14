@@ -32,6 +32,10 @@ public class FeedBackService {
     @Autowired
     JPAQueryFactory jpaQueryFactory;
 
+    public FeedBack getByFeedBackId(Integer id){
+        return feedBackRepository.findById(id).orElseThrow();
+    }
+
     public FeedBack addFeedBack(FeedBack feedBack) {
 
         return feedBackRepository.save(feedBack);
