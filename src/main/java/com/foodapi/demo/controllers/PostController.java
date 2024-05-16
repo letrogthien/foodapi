@@ -80,7 +80,7 @@ public class PostController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestParam String title,
-            @RequestParam String content, @RequestParam MultipartFile[] files) {
+            @RequestParam String content, @RequestParam(required= false) MultipartFile[] files) {
 
         User user = authenticationService.authenticationUser();
         
@@ -103,8 +103,8 @@ public class PostController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<?> editPost(@RequestParam String title,
-            @RequestParam String content, @RequestParam Integer postId) {
+    public ResponseEntity<?> editPost(@RequestParam(required = false) String title,
+            @RequestParam(required = false) String content, @RequestParam Integer postId) {
         User user = authenticationService.authenticationUser();
 
         Post post = postService.getPostByPostId(postId).orElseThrow();

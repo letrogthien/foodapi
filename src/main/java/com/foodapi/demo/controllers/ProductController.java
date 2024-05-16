@@ -10,6 +10,7 @@ import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.ProductDto;
+import com.foodapi.demo.services.AuthenticationService;
 import com.foodapi.demo.services.FlashSaleService;
 import com.foodapi.demo.services.OrderItemService;
 import com.foodapi.demo.services.ProductService;
@@ -17,6 +18,7 @@ import com.foodapi.demo.services.ShopService;
 import com.foodapi.demo.services.UploadService;
 import com.foodapi.demo.services.UserService;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -53,10 +55,12 @@ public class ProductController {
     @Autowired
     ObjectMapper objectMapper;
 
-
     @Autowired
     private OrderItemService orderItemService;
-    
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllProduct() {
         return new ResponseEntity<>(productService.convertListProductToDTO(productService.getAllProducts()),
@@ -98,19 +102,26 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@RequestParam("productDto") String productDtoJson, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> addProduct(@RequestParam String name, @RequestParam String desc,
+            @RequestParam BigDecimal price, @RequestParam Integer categoryId,
+            @RequestParam("file") MultipartFile file) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
+            User user = authenticationService.authenticationUser();
+            Shop shop = shopService.getShopByUser(user).orElseThrow();
+            ProductDto productDto = new ProductDto();
+            productDto.setCategoryId(categoryId);
+            productDto.setDesciption(desc);
+            productDto.setName(name);
+            productDto.setPrice(price);
+            productDto.setShopId(shop.getId());
             if (file != null) {
                 String ok = uploadService.uploadImageService(file);
                 productDto.setImg(ok);
             }
-
             productService.addProduct(productDto);
             return new ResponseEntity<>("add success", HttpStatus.OK);
         } catch (Exception e) {
-           
+
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -121,18 +132,15 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductWithCategoryLike(name), HttpStatus.OK);
     }
 
-    
     @GetMapping("/bestsale")
     public ResponseEntity<?> getMethodName() {
-        return new ResponseEntity<>(productService.convertListProductToDTO(orderItemService.getListProductId()),HttpStatus.OK);
+        return new ResponseEntity<>(productService.convertListProductToDTO(orderItemService.getListProductId()),
+                HttpStatus.OK);
     }
-    
+
     @GetMapping("/flashsale")
     public ResponseEntity<?> getMethodName1() {
         return new ResponseEntity<>(flashSaleService.getAllProductSale(), HttpStatus.OK);
     }
 
-    
-    
-    
 }

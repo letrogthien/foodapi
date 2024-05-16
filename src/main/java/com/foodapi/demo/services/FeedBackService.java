@@ -8,6 +8,7 @@ import org.hibernate.boot.query.FetchDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.foodapi.demo.exceptions.NoSuchElementException;
 import com.foodapi.demo.models.FeedBack;
 import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QFeedBack;

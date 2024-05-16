@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.foodapi.demo.models.Role;
@@ -19,6 +20,8 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+
 
     public Optional<User> getUserByUserName(String name){
         return userRepository.findByUsername(name);
@@ -50,5 +53,7 @@ public class UserService {
         return user.getId();
 
     }
+
+   
 
 }
