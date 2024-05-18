@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.foodapi.demo.exceptions.User.UserAlreadyExist;
 import com.foodapi.demo.jwt.JwtModel;
 import com.foodapi.demo.jwt.JwtUtil;
+import com.foodapi.demo.models.Otp;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.JwtResponse;
 import com.foodapi.demo.models.DTO.LoginDto;
 import com.foodapi.demo.models.DTO.RegisterDto;
+import com.foodapi.demo.services.OtpService;
 import com.foodapi.demo.services.UserService;
 
 import jakarta.annotation.security.PermitAll;
@@ -48,6 +50,9 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private OtpService otpService;
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
 
@@ -66,19 +71,23 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
+    public ResponseEntity<?> register(@RequestParam String username, @RequestParam String password, @RequestParam String email, @RequestParam Integer otp) {
 
-        if (userService.exitUserName(registerDto.getUserName())) {
-            throw new UserAlreadyExist(registerDto.getUserName());
+        if (userService.exitUserName(username)) {
+            throw new UserAlreadyExist(username);
         }
-        if (userService.exitEmail(registerDto.getEmail())) {
-            throw new UserAlreadyExist(registerDto.getEmail());
+        if (userService.exitEmail(email)) {
+            throw new UserAlreadyExist(email);
+        }
+        List<Otp> otps = otpService.getByOtp(otp);
+        if (!otpService.checkOtp(otps, email)) {
+            return new ResponseEntity<>("OTP not true", HttpStatus.CONFLICT);
         }
         User user = new User();
-        user.setUsername(registerDto.getUserName());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
         user.setActive(true);
-        user.setEmail(registerDto.getEmail());
+        user.setEmail(email);
         user.setRegistDate(new Timestamp(System.currentTimeMillis()));
         userService.defaultRole(user);
         userService.saveUser(user);

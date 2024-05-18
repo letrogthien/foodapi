@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.foodapi.demo.models.Category;
 import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QProduct;
 import com.foodapi.demo.models.DTO.ProductDto;
@@ -27,6 +28,9 @@ public class ProductService {
 
     @Autowired
     ShopService shopService;
+
+    @Autowired 
+    private JPAQueryFactory queryFactory;
 
     QProduct qProduct= QProduct.product;
 
@@ -97,6 +101,14 @@ public class ProductService {
         return convertListProductToDTO((List<Product>) productRepository.findAll(producthascategories)) ;
     }
 
+    public List<Category> getCategoryByShopId(Integer shopId){
+        return queryFactory.select(qProduct.category)
+                            .distinct()
+                            .from(qProduct)
+                            .where(qProduct.shop.id.eq(shopId))
+                            .fetch();
+
+    }
     
    
 }
