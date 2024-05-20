@@ -144,7 +144,7 @@ public class ProductController {
     }
 
     @GetMapping("/flashsale/shop")
-    public ResponseEntity<?> getMethodName(@RequestParam Integer shopId) {
+    public ResponseEntity<?> getProductSaleOfShop(@RequestParam Integer shopId) {
 
         return new ResponseEntity<>(flashSaleService.getAllProductSaleOfShop(shopId), HttpStatus.OK);
     }

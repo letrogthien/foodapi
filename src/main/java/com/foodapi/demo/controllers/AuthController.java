@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.foodapi.demo.exceptions.User.UserAlreadyExist;
 import com.foodapi.demo.jwt.JwtModel;
 import com.foodapi.demo.jwt.JwtUtil;
+import com.foodapi.demo.models.Cart;
 import com.foodapi.demo.models.Otp;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.JwtResponse;
 import com.foodapi.demo.models.DTO.LoginDto;
 import com.foodapi.demo.models.DTO.RegisterDto;
+import com.foodapi.demo.services.CartService;
 import com.foodapi.demo.services.OtpService;
 import com.foodapi.demo.services.UserService;
 
@@ -53,6 +55,9 @@ public class AuthController {
     @Autowired
     private OtpService otpService;
 
+    @Autowired
+    private CartService cartSevice;
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
 
@@ -91,6 +96,11 @@ public class AuthController {
         user.setRegistDate(new Timestamp(System.currentTimeMillis()));
         userService.defaultRole(user);
         userService.saveUser(user);
+
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartSevice.createCart(cart);
+
         return new ResponseEntity<>("register Succes", HttpStatus.OK);
     }
     @GetMapping("/test")

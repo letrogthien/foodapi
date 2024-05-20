@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.foodapi.demo.models.FlashSale;
 import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QFlashSale;
+import com.foodapi.demo.models.DTO.FlashSaleDto;
 import com.foodapi.demo.models.DTO.ProductDto;
 import com.foodapi.demo.repositories.FlashSaleRepository;
 import com.querydsl.core.types.Projections;
@@ -23,24 +24,26 @@ public class FlashSaleService {
 
     QFlashSale qFlashSale = QFlashSale.flashSale;
 
-    public List<ProductDto> getAllProductSale() {
+    public List<FlashSaleDto> getAllProductSale() {
         return jpaQueryFactory
-                .select(Projections.constructor(ProductDto.class, qFlashSale.product.id, qFlashSale.product.name,
-                        qFlashSale.product.description,
-                        qFlashSale.product.img,
-                        qFlashSale.product.price,
-                        qFlashSale.product.category.id,
-                        qFlashSale.product.shop.id))
+                .select(Projections.constructor(FlashSaleDto.class, qFlashSale.id, qFlashSale.product.name,
+                qFlashSale.product.description,
+                qFlashSale.product.img,
+                qFlashSale.product.price,
+                qFlashSale.price,
+                qFlashSale.product.category.id,
+                qFlashSale.product.shop.id))
                 .from(qFlashSale)
                 .fetch();
     }
 
-    public List<ProductDto> getAllProductSaleOfShop(Integer shopId) {
+    public List<FlashSaleDto> getAllProductSaleOfShop(Integer shopId) {
         return jpaQueryFactory
-                .select(Projections.constructor(ProductDto.class, qFlashSale.product.id, qFlashSale.product.name,
+                .select(Projections.constructor(FlashSaleDto.class, qFlashSale.id, qFlashSale.product.name,
                         qFlashSale.product.description,
                         qFlashSale.product.img,
                         qFlashSale.product.price,
+                        qFlashSale.price,
                         qFlashSale.product.category.id,
                         qFlashSale.product.shop.id))
                 .from(qFlashSale)
