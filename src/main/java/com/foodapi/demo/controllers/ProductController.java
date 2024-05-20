@@ -133,14 +133,26 @@ public class ProductController {
     }
 
     @GetMapping("/bestsale")
-    public ResponseEntity<?> getMethodName() {
+    public ResponseEntity<?> getAllBestSale() {
         return new ResponseEntity<>(productService.convertListProductToDTO(orderItemService.getListProductId()),
                 HttpStatus.OK);
     }
 
     @GetMapping("/flashsale")
-    public ResponseEntity<?> getMethodName1() {
+    public ResponseEntity<?> getAllFlashSale() {
         return new ResponseEntity<>(flashSaleService.getAllProductSale(), HttpStatus.OK);
     }
+
+    @GetMapping("/flashsale/shop")
+    public ResponseEntity<?> getMethodName(@RequestParam Integer shopId) {
+
+        return new ResponseEntity<>(flashSaleService.getAllProductSaleOfShop(shopId), HttpStatus.OK);
+    }
+    @GetMapping("/category/shop")
+    public ResponseEntity<?> getMethodName(@RequestParam Integer shopId, @RequestParam Integer categoryId) {
+        return new ResponseEntity<>(productService.getProductByCategoryByShopId(categoryId, shopId), HttpStatus.OK);
+    }
+    
+    
 
 }

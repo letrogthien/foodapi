@@ -7,6 +7,6 @@ import com.foodapi.demo.models.FlashSale;
 
 @Repository
 public interface FlashSaleRepository extends JpaRepository<FlashSale,Integer> {
-    
+
     
 }

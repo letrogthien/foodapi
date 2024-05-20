@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 
 import com.foodapi.demo.models.Category;
@@ -14,6 +15,7 @@ import com.foodapi.demo.models.QProduct;
 import com.foodapi.demo.models.DTO.ProductDto;
 
 import com.foodapi.demo.repositories.ProductRepository;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,10 +31,10 @@ public class ProductService {
     @Autowired
     ShopService shopService;
 
-    @Autowired 
+    @Autowired
     private JPAQueryFactory queryFactory;
 
-    QProduct qProduct= QProduct.product;
+    QProduct qProduct = QProduct.product;
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
@@ -93,22 +95,27 @@ public class ProductService {
                 product.getCategory().getId(),
                 product.getShop().getId());
     }
-    
-    
-    public List<ProductDto> getProductWithCategoryLike(String category){
-        
+
+    public List<ProductDto> getProductWithCategoryLike(String category) {
+
         BooleanExpression producthascategories = qProduct.category.name.contains(category);
-        return convertListProductToDTO((List<Product>) productRepository.findAll(producthascategories)) ;
+        return convertListProductToDTO((List<Product>) productRepository.findAll(producthascategories));
     }
 
-    public List<Category> getCategoryByShopId(Integer shopId){
+    public List<Category> getCategoryByShopId(Integer shopId) {
         return queryFactory.select(qProduct.category)
-                            .distinct()
-                            .from(qProduct)
-                            .where(qProduct.shop.id.eq(shopId))
-                            .fetch();
+                .distinct()
+                .from(qProduct)
+                .where(qProduct.shop.id.eq(shopId))
+                .fetch();
 
     }
-    
-   
+
+    public List<ProductDto> getProductByCategoryByShopId(Integer categoryId, Integer shopId) {
+        return queryFactory
+                .select(Projections.constructor(ProductDto.class, qProduct.id, qProduct.name, qProduct.description,
+                        qProduct.img, qProduct.price, qProduct.category.id, qProduct.shop.id))
+                .from(qProduct).where(qProduct.shop.id.eq(shopId), qProduct.category.id.eq(categoryId)).fetch();
+    }
+
 }

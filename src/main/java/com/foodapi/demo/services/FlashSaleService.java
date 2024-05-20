@@ -35,4 +35,17 @@ public class FlashSaleService {
                 .fetch();
     }
 
+    public List<ProductDto> getAllProductSaleOfShop(Integer shopId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class, qFlashSale.product.id, qFlashSale.product.name,
+                        qFlashSale.product.description,
+                        qFlashSale.product.img,
+                        qFlashSale.product.price,
+                        qFlashSale.product.category.id,
+                        qFlashSale.product.shop.id))
+                .from(qFlashSale)
+                .where(qFlashSale.product.shop.id.eq(shopId) )
+                .fetch();
+    }
+
 }

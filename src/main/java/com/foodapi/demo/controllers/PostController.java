@@ -80,7 +80,7 @@ public class PostController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestParam String title,
-            @RequestParam String content, @RequestParam(required = false) MultipartFile[] files) {
+            @RequestParam String content, @RequestParam(required = false) List<MultipartFile> files) {
 
         User user = authenticationService.authenticationUser();
 
@@ -91,7 +91,7 @@ public class PostController {
         post.setTitle(title);
         Post a = postService.savePost(post);
 
-        if (files != null && files.length > 0) {
+        if (files != null && files.size() > 0) {
             for (MultipartFile multipartFile : files) {
                 if (multipartFile != null && !multipartFile.isEmpty()) {
                     String saveString = uploadService.uploadImageService(multipartFile);
