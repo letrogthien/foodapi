@@ -80,24 +80,28 @@ public class PostController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestParam String title,
-            @RequestParam String content, @RequestParam(required= false) MultipartFile[] files) {
+            @RequestParam String content, @RequestParam(required = false) MultipartFile[] files) {
 
         User user = authenticationService.authenticationUser();
-        
+
         Post post = new Post();
         post.setContent(content);
         post.setUser(user);
         post.setCreateAt(new Timestamp(System.currentTimeMillis()));
         post.setTitle(title);
-        Post a= postService.savePost(post);
+        Post a = postService.savePost(post);
 
-        for (MultipartFile multipartFile : files) {
-            String saveString=uploadService.uploadImageService(multipartFile);
-            PostImg postImg = new PostImg();
-            postImg.setName(saveString);
-            postImg.setUrl(saveString);
-            postImg.setPost(postService.getPostByPostId(a.getId()).orElseThrow());
-            postImgService.savePostImg(postImg);
+        if (files != null && files.length > 0) {
+            for (MultipartFile multipartFile : files) {
+                if (multipartFile != null && !multipartFile.isEmpty()) {
+                    String saveString = uploadService.uploadImageService(multipartFile);
+                    PostImg postImg = new PostImg();
+                    postImg.setName(saveString);
+                    postImg.setUrl(saveString);
+                    postImg.setPost(postService.getPostByPostId(a.getId()).orElseThrow());
+                    postImgService.savePostImg(postImg);
+                }
+            }
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
