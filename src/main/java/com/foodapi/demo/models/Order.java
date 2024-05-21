@@ -39,5 +39,6 @@ public class Order {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private StatusOrder statusOrder;
 
+    private String address;
     
 }

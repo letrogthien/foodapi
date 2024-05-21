@@ -27,6 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, Quer
     Optional<Product> findById(Integer id);
     
     void deleteByName(String name);
+    List<Product> findByShopId(Integer shopId);
 
     
     

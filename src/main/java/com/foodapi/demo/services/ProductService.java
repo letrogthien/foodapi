@@ -111,6 +111,10 @@ public class ProductService {
 
     }
 
+    public List<ProductDto> getProductByShopId(Integer shopId){
+        return convertListProductToDTO(productRepository.findByShopId(shopId));
+    }
+
     public List<ProductDto> getProductByCategoryByShopId(Integer categoryId, Integer shopId) {
         return queryFactory
                 .select(Projections.constructor(ProductDto.class, qProduct.id, qProduct.name, qProduct.description,

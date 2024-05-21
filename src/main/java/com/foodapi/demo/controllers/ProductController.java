@@ -126,11 +126,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test(@RequestParam String name) {
 
-        return new ResponseEntity<>(productService.getProductWithCategoryLike(name), HttpStatus.OK);
-    }
 
     @GetMapping("/bestsale")
     public ResponseEntity<?> getAllBestSale() {
@@ -151,6 +147,10 @@ public class ProductController {
     @GetMapping("/category/shop")
     public ResponseEntity<?> getMethodName(@RequestParam Integer shopId, @RequestParam Integer categoryId) {
         return new ResponseEntity<>(productService.getProductByCategoryByShopId(categoryId, shopId), HttpStatus.OK);
+    }
+    @GetMapping("/shop")
+    public ResponseEntity<?> getProductOfShopEntity(@RequestParam Integer shopId) {
+        return new ResponseEntity<>(productService.getProductByShopId(shopId), HttpStatus.OK);
     }
     
     
