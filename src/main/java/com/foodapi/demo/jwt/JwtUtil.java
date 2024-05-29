@@ -4,6 +4,7 @@ import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,13 +12,20 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+
+import com.foodapi.demo.services.CustomUserDetail;
 
 @Component
 public class JwtUtil {
+    @Autowired
+    CustomUserDetail userDetailsService;
 
     @Value("${security.jwt.secret}")
     private String secretKey;
@@ -51,6 +59,13 @@ public class JwtUtil {
         }
         return false;
     }
+    public Claims validateToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningkey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
     public Date getExpiration(String jwt){
         Date date = Jwts.parserBuilder()
@@ -69,6 +84,12 @@ public class JwtUtil {
                         .getBody()
                         .getExpiration();
         return date.before(Date.from(Instant.now()));
+    }
+
+    public Authentication getAuthentication(String token) {
+        String username = getUsernameFromJwt(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     public String getUsernameFromJwt(String token) {

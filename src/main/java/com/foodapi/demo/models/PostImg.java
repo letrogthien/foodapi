@@ -1,5 +1,8 @@
 package com.foodapi.demo.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,6 +32,7 @@ public class PostImg {
 
     @ManyToOne(fetch =FetchType.LAZY )
     @JoinColumn(name = "post_id" )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     

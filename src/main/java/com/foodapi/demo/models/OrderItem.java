@@ -2,6 +2,9 @@ package com.foodapi.demo.models;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,10 +26,12 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Order order;
 
     @OneToOne
     @JoinColumn(name = "product_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
 
     @Column(name = "price_buy")

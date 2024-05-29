@@ -4,6 +4,8 @@ package com.foodapi.demo.models;
 
 import java.sql.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.mapping.List;
 
 import jakarta.persistence.Column;
@@ -28,6 +30,7 @@ public class Post {
 
     @ManyToOne()
     @JoinColumn(name="user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;    
 
     @Column(nullable = false)

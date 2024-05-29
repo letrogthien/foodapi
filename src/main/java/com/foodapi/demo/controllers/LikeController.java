@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.foodapi.demo.models.Like;
 import com.foodapi.demo.models.User;
@@ -18,7 +19,7 @@ import com.foodapi.demo.services.PostService;
 import com.foodapi.demo.services.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@Controller
+@RestController
 @RequestMapping("like")
 public class LikeController {
     @Autowired

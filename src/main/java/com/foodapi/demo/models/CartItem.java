@@ -1,4 +1,7 @@
 package com.foodapi.demo.models;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,10 +23,12 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Cart cart;
 
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
 
     private Integer quantity;

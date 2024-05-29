@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,6 +27,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class Security {
@@ -80,15 +82,22 @@ public class Security {
         httpSecurity.csrf((csrf)->csrf.disable())
                     .cors(cors->cors.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(author->author
-                                                        .requestMatchers("products/delete/**").hasAnyAuthority("SHOPKEEPER","ADMIN")
-                                                        .requestMatchers("/products/add").hasAuthority("SHOPKEEPER")
-                                                        .requestMatchers("shop/register/**").hasAnyAuthority("USER")
-                                                        .requestMatchers("/auth/test").hasAnyAuthority("USER")
+                                                        .requestMatchers("products/delete/**")
+                                                        .hasAnyAuthority("SHOPKEEPER","ADMIN")
+                                                        .requestMatchers("/products/add")
+                                                        .hasAuthority("SHOPKEEPER")
+                                                        .requestMatchers("shop/register/**","/auth/test","/comment/**")
+                                                        .hasAnyAuthority("USER")
+                                                        .requestMatchers(HttpMethod.POST, "/feedback/**","/upload/img","/like/**","/post/**","/shop/**","/user/**")
+                                                        .hasAnyAuthority("USER")
+                                                        .requestMatchers("/ws/**").permitAll()
                                                         .anyRequest().permitAll()
-
+                                                        
                                                         
         );
+        
+
         httpSecurity.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
-}
+}   

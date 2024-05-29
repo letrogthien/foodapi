@@ -21,3 +21,5 @@ public class ScheduleOtp {
         otpRepository.deleteByExpirationBefore(new Timestamp(System.currentTimeMillis()));
     }
 }
+
+

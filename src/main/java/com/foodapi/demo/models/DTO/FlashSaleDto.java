@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class FlashSaleDto {
     private int id;
     private String name;
-    private String desciption;
+    private String description;
     private String img;
     private BigDecimal price;
     private BigDecimal newPrice;

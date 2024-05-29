@@ -1,5 +1,6 @@
 package com.foodapi.demo.services;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.foodapi.demo.models.Category;
 import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QProduct;
+import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.DTO.ProductDto;
 
 import com.foodapi.demo.repositories.ProductRepository;
@@ -63,7 +65,7 @@ public class ProductService {
     public void addProduct(ProductDto productDto) {
         Product product = new Product();
         product.setName(productDto.getName());
-        product.setDescription(productDto.getDesciption());
+        product.setDescription(productDto.getDescription());
         product.setImg(productDto.getImg());
         product.setPrice(productDto.getPrice());
         product.setCreateAt(new Timestamp(System.currentTimeMillis()));
@@ -94,6 +96,18 @@ public class ProductService {
                 product.getPrice(),
                 product.getCategory().getId(),
                 product.getShop().getId());
+    }
+    public Product updateProduct( String name, BigDecimal price, Category category, String description, Shop shop, Integer id) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow();
+
+        existingProduct.setName(name);
+        existingProduct.setPrice(price);
+        existingProduct.setCategory(category);
+        existingProduct.setDescription(description);
+        existingProduct.setShop(shop);
+        existingProduct.setUpdateAt(new Timestamp(System.currentTimeMillis()));
+        return productRepository.save(existingProduct);
     }
 
     public List<ProductDto> getProductWithCategoryLike(String category) {

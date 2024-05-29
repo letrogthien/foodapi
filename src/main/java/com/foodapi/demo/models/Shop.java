@@ -12,6 +12,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Data
 @Entity
 @Table(name = "shops")
@@ -29,5 +32,6 @@ public class Shop {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 }

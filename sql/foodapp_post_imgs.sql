@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: foodapi.mysql.database.azure.com    Database: foodapp
+-- Host: 128.199.64.24    Database: foodapp
 -- ------------------------------------------------------
--- Server version	8.0.36-cluster
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,8 +29,8 @@ CREATE TABLE `post_imgs` (
   `post_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `post_id_idx` (`post_id`),
-  CONSTRAINT `post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `post_imgs` (
 
 LOCK TABLES `post_imgs` WRITE;
 /*!40000 ALTER TABLE `post_imgs` DISABLE KEYS */;
-INSERT INTO `post_imgs` VALUES (1,'hinh1','hinh1.png',1),(2,'hinh2','hinh2',1),(3,'hinh3','hinh3',2),(4,'hinh4','hinh4',2),(5,'hinh5','1-chebuoi.jpg',3),(6,'asd','12.jpg',4),(7,'asd','12.jpg',5),(8,'asd','12.jpg',6),(9,'asd','banhtarttraicay.jpg',3),(10,'fsd','banhtarttraicay.jpg',4),(11,'sdf','bunbohue.jpg',5),(12,'sdf','bunbohue.jpg',6);
+INSERT INTO `post_imgs` VALUES (15,'banhtrangtron.jpg','https://tse2.mm.bing.net/th?id=OIP.eWnIfzArU9HFCS1JAA99xgHaE7&pid=Api&P=0&h=220',12),(16,'bunbohue.jpg','https://tse2.mm.bing.net/th?id=OIP.eWnIfzArU9HFCS1JAA99xgHaE7&pid=Api&P=0&h=220',13),(17,'bunrieucua.jpg','https://tse2.mm.bing.net/th?id=OIP.eWnIfzArU9HFCS1JAA99xgHaE7&pid=Api&P=0&h=220Api&P=0&h=220',14);
 /*!40000 ALTER TABLE `post_imgs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-05 22:22:26
+-- Dump completed on 2024-05-21 23:09:16

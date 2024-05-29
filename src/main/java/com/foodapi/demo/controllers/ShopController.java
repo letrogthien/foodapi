@@ -68,6 +68,12 @@ public class ShopController {
         return new ResponseEntity<>(shop,HttpStatus.OK);
     }
 
+    @GetMapping("/get/user")
+    public ResponseEntity<?> getShopByUserId(@RequestParam Integer userId) {
+        return new ResponseEntity<>(shopService.convertShopToDTO(shopService.getShopByUserId(userId).orElseThrow()), HttpStatus.OK);
+    }
+    
+
     @GetMapping("/get")
     public ResponseEntity<?> getShopById(@RequestParam Integer id) {
         return new ResponseEntity<>(shopService.getShopById(id), HttpStatus.OK);

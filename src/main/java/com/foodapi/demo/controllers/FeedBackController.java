@@ -39,7 +39,7 @@ public class FeedBackController {
     AuthenticationService authenticationService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addFeedBack( @RequestParam String content, @RequestParam Integer rateting, @RequestParam Integer productId) {
+    public ResponseEntity<?> addFeedBack(@RequestParam String content, @RequestParam Integer rateting, @RequestParam Integer productId) {
         User user = authenticationService.authenticationUser();
         FeedBack feedBack = new FeedBack();
         feedBack.setUser(user);

@@ -103,11 +103,7 @@ public class AuthController {
 
         return new ResponseEntity<>("register Succes", HttpStatus.OK);
     }
-    @GetMapping("/test")
-    public String getMethodName() {
-        return "hi";
-    }
-    
+
 
     
     

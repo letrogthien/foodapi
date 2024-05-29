@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: foodapi.mysql.database.azure.com    Database: foodapp
+-- Host: 128.199.64.24    Database: foodapp
 -- ------------------------------------------------------
--- Server version	8.0.36-cluster
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,16 +24,16 @@ DROP TABLE IF EXISTS `transactions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transactions` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `order_id` int DEFAULT NULL,
+  `date` datetime(6) DEFAULT NULL,
+  `paymentmethod` varchar(255) DEFAULT NULL,
   `totalamount` decimal(38,2) DEFAULT NULL,
-  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `paymentmethod` varchar(50) DEFAULT NULL,
+  `order_id` int DEFAULT NULL,
   `status` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `status` (`status`),
-  KEY `order_id` (`order_id`),
-  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`status`) REFERENCES `status_pay` (`id`),
-  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`)
+  UNIQUE KEY `UK_rthu6t9h3qfej8txljv8msly0` (`order_id`),
+  UNIQUE KEY `UK_mkvc82cwstjeh3x9cquh7xjpi` (`status`),
+  CONSTRAINT `FK1x89w5eecieauy8gmwitctdbu` FOREIGN KEY (`status`) REFERENCES `status_pay` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKfyxndk58yiq2vpn0yd4m09kbt` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-05 22:22:12
+-- Dump completed on 2024-05-21 23:08:20

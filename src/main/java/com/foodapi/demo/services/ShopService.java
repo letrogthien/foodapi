@@ -24,7 +24,7 @@ public class ShopService {
         return shopRepository.findByUser(user);
     }
 
-    public List<Shop> getShopByUserId(Integer userId){
+    public Optional<Shop> getShopByUserId(Integer userId){
         return shopRepository.findByUser_Id(userId);
     }
     public Shop saveShop(Shop shop){

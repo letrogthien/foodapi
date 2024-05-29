@@ -16,32 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cartitems`
+-- Table structure for table `flashsale`
 --
 
-DROP TABLE IF EXISTS `cartitems`;
+DROP TABLE IF EXISTS `flashsale`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cartitems` (
+CREATE TABLE `flashsale` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `cart_id` int DEFAULT NULL,
-  `product_id` int DEFAULT NULL,
-  `quantity` int NOT NULL,
+  `product_id` int NOT NULL,
+  `newprice` decimal(38,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `cart_id` (`cart_id`),
-  KEY `product_id` (`product_id`),
-  CONSTRAINT `cartitems_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `cartitems_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `product_idflashsae_idx` (`product_id`),
+  CONSTRAINT `product_idflashsae` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cartitems`
+-- Dumping data for table `flashsale`
 --
 
-LOCK TABLES `cartitems` WRITE;
-/*!40000 ALTER TABLE `cartitems` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cartitems` ENABLE KEYS */;
+LOCK TABLES `flashsale` WRITE;
+/*!40000 ALTER TABLE `flashsale` DISABLE KEYS */;
+INSERT INTO `flashsale` VALUES (1,8,10000.00),(2,9,10000.00),(3,10,10000.00),(4,12,52000.00);
+/*!40000 ALTER TABLE `flashsale` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-21 23:09:03
+-- Dump completed on 2024-05-21 23:09:09

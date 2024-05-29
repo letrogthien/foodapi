@@ -11,6 +11,7 @@ import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.ProductDto;
 import com.foodapi.demo.services.AuthenticationService;
+import com.foodapi.demo.services.CategoryService;
 import com.foodapi.demo.services.FlashSaleService;
 import com.foodapi.demo.services.OrderItemService;
 import com.foodapi.demo.services.ProductService;
@@ -56,6 +57,9 @@ public class ProductController {
     ObjectMapper objectMapper;
 
     @Autowired
+    CategoryService categoryService;
+
+    @Autowired
     private OrderItemService orderItemService;
 
     @Autowired
@@ -94,6 +98,22 @@ public class ProductController {
         return new ResponseEntity<>("delete success", HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> updateProduct(@RequestBody ProductDto productDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUserNameOrEmail(authentication.getName()).orElseThrow();
+        Shop shop = shopService.getShopByUser(user).orElseThrow();
+        Product product = productService.getProductById(productDto.getId()).orElseThrow();
+        if (product.getShop().getId() != shop.getId()) {
+            return new ResponseEntity<>("not you", HttpStatus.UNAUTHORIZED);
+        }
+        Product product1 = productService.updateProduct(productDto.getName(), productDto.getPrice(), categoryService.getCategoryById(productDto.getCategoryId()).orElseThrow(),
+        productDto.getDescription(),shopService.getShopById(productDto.getShopId()).orElseThrow(),productDto.getId());
+        
+        return new ResponseEntity<>("ok",HttpStatus.OK);
+    }
+    
+
     @GetMapping("/search")
     public ResponseEntity<?> searchProductByName(@RequestParam(required = false) String name) {
 
@@ -110,7 +130,7 @@ public class ProductController {
             Shop shop = shopService.getShopByUser(user).orElseThrow();
             ProductDto productDto = new ProductDto();
             productDto.setCategoryId(categoryId);
-            productDto.setDesciption(desc);
+            productDto.setDescription(desc);
             productDto.setName(name);
             productDto.setPrice(price);
             productDto.setShopId(shop.getId());
