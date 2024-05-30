@@ -13,6 +13,7 @@ import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QOrder;
 import com.foodapi.demo.models.StatusOrder;
 import com.foodapi.demo.models.DTO.OrderDto;
+import com.foodapi.demo.models.DTO.OrderRequest;
 import com.foodapi.demo.models.DTO.ProductDto;
 import com.foodapi.demo.repositories.OrderRepository;
 import com.querydsl.core.types.Projections;
@@ -20,7 +21,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 public class OrderService {
-    @Autowired 
+    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -28,32 +29,43 @@ public class OrderService {
 
     QOrder qOrder = QOrder.order;
 
-    public List<Order> getOrderByShop(Integer shopId){
+    public List<Order> getOrderByShop(Integer shopId) {
         return orderRepository.findByShopId(shopId);
     }
 
+    public List<OrderDto> getOrderByShopTime(Integer shopId, Long day) {
+        return jpaQueryFactory
+                .select(Projections.constructor(OrderDto.class, qOrder.id, qOrder.user.id, qOrder.totalPrice,
+                        qOrder.date, qOrder.statusOrder.id, qOrder.address, qOrder.shop.id))
+                .from(qOrder)
+                .where(qOrder.date.after(new Timestamp(System.currentTimeMillis() - day * 24 * 60 * 60 * 1000)),
+                        qOrder.shop.id.eq(shopId), qOrder.statusOrder.id.eq(3))
+                .fetch();
+    }
 
-    public List<OrderDto> getOrderByShopTime(Integer shopId, Long day){
-        return jpaQueryFactory.select(Projections.constructor(OrderDto.class, qOrder.id,qOrder.user.id,qOrder.totalPrice,qOrder.date,qOrder.statusOrder.id,qOrder.address,qOrder.shop.id))
-                                .from(qOrder)
-                                .where(qOrder.date.after(new Timestamp(System.currentTimeMillis()-day*24*60*60*1000)), qOrder.shop.id.eq(shopId))
-                                .fetch();
+    public Order saveOrder(Order order){
+        return orderRepository.save(order);
     }
 
 
-    public List<OrderDto> getOrderByStatus(StatusOrder statusOrder){
+
+    public List<OrderDto> getOrderByStatus(StatusOrder statusOrder) {
         return convertListProductToDTO(orderRepository.findByStatusOrder(statusOrder));
     }
 
-    public Optional<Order> getOrderById(Integer id){
+    public Optional<Order> getOrderById(Integer id) {
         return orderRepository.findById(id);
     }
 
-    public Order changeOrderStatus(StatusOrder statusOrder, Order order ){
+    public List<OrderDto> getByUserId(Integer userId) {
+        return convertListProductToDTO(orderRepository.findByUserId(userId));
+    }
+
+    public Order changeOrderStatus(StatusOrder statusOrder, Order order) {
         order.setStatusOrder(statusOrder);
         return orderRepository.save(order);
     }
-    
+
     public List<OrderDto> convertListProductToDTO(List<Order> list) {
         return list.stream()
                 .map(order -> new OrderDto(
@@ -63,23 +75,20 @@ public class OrderService {
                         order.getDate(),
                         order.getStatusOrder().getId(),
                         order.getAddress(),
-                        order.getShop().getId()
-                ))
-                        
+                        order.getShop().getId()))
+
                 .collect(Collectors.toList());
     }
 
     public OrderDto convertProductToDTO(Order order) {
         return new OrderDto(
-            order.getId(),
-            order.getUser().getId(),
-            order.getTotalPrice(),
-            order.getDate(),
-            order.getStatusOrder().getId(),
-            order.getAddress(),
-            order.getShop().getId()
-    );
+                order.getId(),
+                order.getUser().getId(),
+                order.getTotalPrice(),
+                order.getDate(),
+                order.getStatusOrder().getId(),
+                order.getAddress(),
+                order.getShop().getId());
     }
-
 
 }

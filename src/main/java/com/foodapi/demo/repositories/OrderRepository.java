@@ -12,5 +12,6 @@ import com.foodapi.demo.models.StatusOrder;
 public interface OrderRepository extends JpaRepository<Order, Integer>, QuerydslPredicateExecutor{
     List<Order> findByShopId(Integer shopId);
     List<Order> findByStatusOrder(StatusOrder statusOrder);
+    List<Order> findByUserId(Integer userId);
     
 }

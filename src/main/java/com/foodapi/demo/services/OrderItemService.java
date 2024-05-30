@@ -33,6 +33,10 @@ public class OrderItemService {
         return orderItemRepository.findByOrderId(orderId);
     }
 
+    public OrderItem saveOrderItem(OrderItem orderItem){
+        return orderItemRepository.save(orderItem);
+    }
+
     public List<OrderItemDto> convertListProductToDTO(List<OrderItem> orderItems) {
         return orderItems.stream()
                 .map(orderItem -> new OrderItemDto(

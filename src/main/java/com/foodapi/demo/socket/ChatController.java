@@ -65,7 +65,7 @@ public class ChatController {
                 oMapper.writeValue(jsonFile, messages);
             }
             if (message3 != null) {
-                File jsonFile = new File("/tmp/"+message2.getFilename());
+                File jsonFile = new File("/tmp/"+message3.getFilename());
                 List<Message> messages = chatService.readMessagesFromFile(jsonFile);
                 messages.add(message);
                 oMapper.writeValue(jsonFile, messages);

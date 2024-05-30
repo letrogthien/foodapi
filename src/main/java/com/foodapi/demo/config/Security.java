@@ -88,7 +88,7 @@ public class Security {
                                                         .hasAuthority("SHOPKEEPER")
                                                         .requestMatchers("shop/register/**","/auth/test","/comment/**")
                                                         .hasAnyAuthority("USER")
-                                                        .requestMatchers(HttpMethod.POST, "/feedback/**","/upload/img","/like/**","/post/**","/shop/**","/user/**")
+                                                        .requestMatchers(HttpMethod.POST, "/feedback/**","/upload/img","/like/**","/post/**","/shop/**","/user/**","/order/**")
                                                         .hasAnyAuthority("USER")
                                                         .requestMatchers("/ws/**").permitAll()
                                                         .anyRequest().permitAll()

@@ -62,6 +62,7 @@ public class ShopController {
         Role role= roleRepository.findByName("SHOPKEEPER").orElseThrow();
         roles.add(role);
         user.setRoles(roles);
+        
         User newUser = userService.saveUser(user);
         
         
