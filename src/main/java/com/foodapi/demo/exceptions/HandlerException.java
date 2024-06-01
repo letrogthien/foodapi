@@ -50,4 +50,6 @@ public class HandlerException {
         ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()),ex.getMessage());
       return new ResponseEntity<ErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    
 }

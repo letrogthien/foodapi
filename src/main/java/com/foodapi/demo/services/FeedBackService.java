@@ -78,6 +78,15 @@ public class FeedBackService {
                 .where(qFeedBack.product.id.eq(id))
                 .fetchOne();
     }
+    public List<Double> avarageOfShop(Integer id){
+        QFeedBack qFeedBack = QFeedBack.feedBack;
+        return jpaQueryFactory.select(qFeedBack.rateing.avg())
+                                .from(qFeedBack)
+                                .where(qFeedBack.product.shop.id.eq(id))
+                                .fetch();
+    }
+
+    
 
     public long sumComment(Integer id){
         return feedBackRepository.countByProduct_Id(id);

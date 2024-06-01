@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.foodapi.demo.exceptions.NoSuchElementException;
 import com.foodapi.demo.models.Order;
 import com.foodapi.demo.models.OrderItem;
 import com.foodapi.demo.models.Shop;
@@ -60,7 +61,8 @@ public class OrderController {
     @GetMapping("/shop/status")
     public ResponseEntity<?> getOrderByStatus(@RequestParam Integer shopId, @RequestParam Integer statusId) {
         StatusOrder statusOrder = statusOrderService.getStatusOrderById(statusId).orElseThrow();
-        List<OrderDto> orderDtos = orderService.getOrderByStatus(statusOrder);
+        Shop shop = shopService.getShopByUser(authenticationService.authenticationUser()).orElseThrow(()-> new NoSuchElementException("shop k ton tai"));
+        List<OrderDto> orderDtos = orderService.getOrderByShopAndStatus(statusOrder.getId(), shop.getId());
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
@@ -107,7 +109,7 @@ public class OrderController {
 
             order.setAddress(orderDto.getAddress());
             order.setDate(orderDto.getDate());
-            order.setShop(shopService.getShopById(orderDto.getShopId()).orElseThrow());
+            order.setShop(shopService.getShopById(orderDto.getShopId()).orElseThrow(()-> new NoSuchElementException("not found shop")));
             order.setStatusOrder(statusOrderService.getStatusOrderById(1).orElseThrow());
             order.setTotalPrice(orderDto.getTotalPrice());
             order.setUser(authenticationService.authenticationUser());
@@ -137,12 +139,19 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getByUserId(userId), HttpStatus.OK);
     }
 
-    @GetMapping("item")
+    @GetMapping("/item")
     public ResponseEntity<?> getOrderItem(@RequestParam Integer orderId) {
 
         List<OrderItemDto> dtos = orderItemService
                 .convertListProductToDTO(orderItemService.getOrderItemOfOrder(orderId));
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
+
+    @GetMapping("/allitem/user")
+    public ResponseEntity<?> getAllOrderItemOfUser() {
+        User user = authenticationService.authenticationUser();
+        return new ResponseEntity<>(orderItemService.getAllOrderByUser(user), HttpStatus.OK);
+    }
+    
 
 }

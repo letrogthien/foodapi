@@ -7,11 +7,12 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import com.foodapi.demo.models.Order;
+import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.StatusOrder;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>, QuerydslPredicateExecutor{
     List<Order> findByShopId(Integer shopId);
     List<Order> findByStatusOrder(StatusOrder statusOrder);
     List<Order> findByUserId(Integer userId);
-    
+    List<Order> findByShopAndStatusOrder(Shop shop, StatusOrder statusOrder);
 }

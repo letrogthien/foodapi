@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.foodapi.demo.models.User;
+import java.util.List;
+
 
 
 
@@ -14,4 +16,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsernameOrEmail(String UsernameOrEmail,String userNameOrEmail);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+    List<User> findByUsernameOrEmailLikeIgnoreCase(String username,String email);
 }

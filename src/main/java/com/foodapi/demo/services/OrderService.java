@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.foodapi.demo.models.Order;
 import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QOrder;
+import com.foodapi.demo.models.Shop;
 import com.foodapi.demo.models.StatusOrder;
 import com.foodapi.demo.models.DTO.OrderDto;
+import com.foodapi.demo.models.DTO.OrderItemResponse;
 import com.foodapi.demo.models.DTO.OrderRequest;
 import com.foodapi.demo.models.DTO.ProductDto;
 import com.foodapi.demo.repositories.OrderRepository;
@@ -43,6 +45,8 @@ public class OrderService {
                 .fetch();
     }
 
+    
+
     public Order saveOrder(Order order){
         return orderRepository.save(order);
     }
@@ -53,6 +57,16 @@ public class OrderService {
         return convertListProductToDTO(orderRepository.findByStatusOrder(statusOrder));
     }
 
+    public List<OrderDto> getOrderByShopAndStatus(Integer statusOrder, Integer shop){
+        return jpaQueryFactory
+                .select(Projections.constructor(OrderDto.class, 
+                qOrder.id,qOrder.user.id, qOrder.totalPrice,qOrder.date,qOrder.statusOrder.id,qOrder.address,qOrder.shop.id
+                ))
+                .from(qOrder)
+                .where(qOrder.statusOrder.id.eq(statusOrder).and(qOrder.shop.id.eq(shop)))
+                .fetch();
+
+    }
     public Optional<Order> getOrderById(Integer id) {
         return orderRepository.findById(id);
     }

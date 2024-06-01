@@ -71,6 +71,17 @@ public class FeedBackController {
         return new ResponseEntity<>(feedBackService.sumComment(productId), HttpStatus.OK);
     }
 
+    @GetMapping("/rating/avarage/shop")
+    public ResponseEntity<?> ratingAvarageShop(@RequestParam Integer shopId) {
+        return new ResponseEntity<>(feedBackService.avarageOfShop(shopId), HttpStatus.OK);
+    }
+
+    @GetMapping("/rating/avarage/product")
+    public ResponseEntity<?> ratingAvarage(@RequestParam Integer productId) {
+        return new ResponseEntity<>(feedBackService.averageRating(productId), HttpStatus.OK);
+    }
+    
+
 
     
 

@@ -87,11 +87,7 @@ public class ShopController {
         return new ResponseEntity<>(shopDtos, HttpStatus.OK);
     }
 
-    @GetMapping("/rating/avarage")
-    public ResponseEntity<?> ratingAvarage(@RequestParam Integer shopId) {
-        return new ResponseEntity<>(feedBackService.averageRating(shopId), HttpStatus.OK);
-    }
-    
+   
 
     
     

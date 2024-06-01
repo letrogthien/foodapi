@@ -11,11 +11,14 @@ import com.foodapi.demo.models.Order;
 import com.foodapi.demo.models.OrderItem;
 import com.foodapi.demo.models.Product;
 import com.foodapi.demo.models.QOrderItem;
+import com.foodapi.demo.models.User;
 import com.foodapi.demo.models.DTO.OrderItemDto;
+import com.foodapi.demo.models.DTO.OrderItemResponse;
 import com.foodapi.demo.models.DTO.ProductDto;
 import com.foodapi.demo.repositories.OrderItemRepository;
 import com.foodapi.demo.repositories.OrderRepository;
 import com.querydsl.core.QueryFactory;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
@@ -29,11 +32,13 @@ public class OrderItemService {
     @Autowired
     private JPAQueryFactory queryFactory;
 
+    QOrderItem qOrderItem = QOrderItem.orderItem;
+
     public List<OrderItem> getOrderItemOfOrder(Integer orderId) {
         return orderItemRepository.findByOrderId(orderId);
     }
 
-    public OrderItem saveOrderItem(OrderItem orderItem){
+    public OrderItem saveOrderItem(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
 
@@ -48,13 +53,30 @@ public class OrderItemService {
                 .collect(Collectors.toList());
     }
 
+    public List<OrderItemResponse> getAllOrderByUser(User user) {
+        return queryFactory
+                .select(Projections.constructor(OrderItemResponse.class,
+                        qOrderItem.id,
+                        qOrderItem.order.id,
+                        Projections.constructor(ProductDto.class,
+                                qOrderItem.product.id, qOrderItem.product.name, qOrderItem.product.description,
+                                qOrderItem.product.img, qOrderItem.product.price, qOrderItem.product.category.id,
+                                qOrderItem.product.shop.id),
+                        qOrderItem.priceBuy,
+                        qOrderItem.quantity,
+                        qOrderItem.order.statusOrder.id))
+                .from(qOrderItem)
+                .join(qOrderItem.order).on(qOrderItem.order.user.id.eq(user.getId()))
+                .fetch();
+    }
+
     public OrderItemDto convertProductToDTO(OrderItem orderItem) {
         return new OrderItemDto(
-            orderItem.getId(),
-            orderItem.getOrder().getId(),
-            orderItem.getProduct().getId(),
-            orderItem.getPriceBuy(),
-            orderItem.getQuantity());
+                orderItem.getId(),
+                orderItem.getOrder().getId(),
+                orderItem.getProduct().getId(),
+                orderItem.getPriceBuy(),
+                orderItem.getQuantity());
     }
 
     public List<Product> getListProductId() {

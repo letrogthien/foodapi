@@ -52,4 +52,11 @@ public class UserController {
               return new ResponseEntity<>("ok", HttpStatus.OK);
        }
 
+       @GetMapping("/search")
+       public ResponseEntity<?> getMethodName(@RequestParam String string) {
+           return new ResponseEntity<>(userService.getUserByUserNameOrEmail(string),HttpStatus.OK);
+       }
+       
+       
+
 }
