@@ -75,6 +75,23 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public List<ProductDto> getByNameAndPricebetwen(String name, BigDecimal firstprice, BigDecimal endprice) {
+        if (endprice.toString().equals("0")) {
+            return queryFactory
+                    .select(Projections.constructor(ProductDto.class, qProduct.id, qProduct.name, qProduct.description,
+                            qProduct.img, qProduct.price, qProduct.category.id, qProduct.shop.id))
+                    .from(qProduct)
+                    .where(qProduct.name.containsIgnoreCase(name).and(qProduct.price.gt(firstprice)))
+                    .fetch();
+        }
+        return queryFactory
+                .select(Projections.constructor(ProductDto.class, qProduct.id, qProduct.name, qProduct.description,
+                        qProduct.img, qProduct.price, qProduct.category.id, qProduct.shop.id))
+                .from(qProduct)
+                .where(qProduct.name.containsIgnoreCase(name).and(qProduct.price.between(firstprice, endprice)))
+                .fetch();
+    }
+
     public List<ProductDto> convertListProductToDTO(List<Product> products) {
         return products.stream()
                 .map(product -> new ProductDto(
@@ -97,7 +114,9 @@ public class ProductService {
                 product.getCategory().getId(),
                 product.getShop().getId());
     }
-    public Product updateProduct( String name, BigDecimal price, Category category, String description, Shop shop, Integer id) {
+
+    public Product updateProduct(String name, BigDecimal price, Category category, String description, Shop shop,
+            Integer id) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow();
 
@@ -125,7 +144,7 @@ public class ProductService {
 
     }
 
-    public List<ProductDto> getProductByShopId(Integer shopId){
+    public List<ProductDto> getProductByShopId(Integer shopId) {
         return convertListProductToDTO(productRepository.findByShopId(shopId));
     }
 

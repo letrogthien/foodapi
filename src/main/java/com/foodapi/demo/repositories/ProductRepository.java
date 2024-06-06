@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.foodapi.demo.models.Product;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, Quer
     List<Product> findByShopId(Integer shopId);
 
     
-    
+    List<Product> findByNameContainingIgnoreCaseAndPriceBetween(String name, Double priceStart, Double priceEnd);
+
     
 
     

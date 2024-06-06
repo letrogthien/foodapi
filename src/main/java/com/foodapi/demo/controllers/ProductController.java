@@ -121,6 +121,12 @@ public class ProductController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/searchprice")
+    public ResponseEntity<?> seaerchByNameAndPrice(@RequestParam String name, @RequestParam BigDecimal firstprice, @RequestParam BigDecimal endprice) {
+        return new ResponseEntity<>(productService.getByNameAndPricebetwen(name, firstprice, endprice), HttpStatus.OK);
+    }
+    
+
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(@RequestParam String name, @RequestParam String desc,
             @RequestParam BigDecimal price, @RequestParam Integer categoryId,
